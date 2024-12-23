@@ -1,6 +1,6 @@
 {
   "name": "com.appidea.minigames.animal_flashcards",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "displayName": "Animal Flashcards",
   "description": "this game teaches you animal names",
   "dependencies": {
