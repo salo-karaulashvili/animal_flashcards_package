@@ -41,4 +41,14 @@ public class present : MonoBehaviour
             frame.transform.DOScale(Vector3.zero,0.5f);
         }
     }
+
+    void OnMouseDown(){
+        if(transform.localScale.x==1){
+            animator.SetTrigger("talking");
+            if(!presentOpen){
+                transform.GetChild(1).gameObject.SetActive(false);
+                presentOpen=true;
+            }
+        }
+    }
 }

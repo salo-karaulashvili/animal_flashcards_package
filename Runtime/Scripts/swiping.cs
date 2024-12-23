@@ -5,7 +5,6 @@ using DG.Tweening;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
-
 public class swiping : MonoBehaviour
 {
     [SerializeField] GameObject[] cards;
@@ -36,6 +35,20 @@ public class swiping : MonoBehaviour
                 if(cards[curIndx].GetComponent<present>().presentOpen){
                     presentsOpen[curIndx]=true;
                  }
+            }
+        }
+        if(Input.GetMouseButtonDown(0)){
+            beagn=true;
+            initTouchPosition=Input.mousePosition;
+        }
+        if(Input.GetMouseButtonUp(0)&&beagn){
+            Vector2 mousePos=Input.mousePosition;
+            if(math.abs(initTouchPosition.x-mousePos.x)/Screen.width>touchThreshhold&&curIndx<CARD_SIZE&&curIndx>=0){
+                if(initTouchPosition.x-mousePos.x>0&curIndx!=CARD_SIZE-1) swipeRightToLeft();
+                else if(initTouchPosition.x-mousePos.x<0&&curIndx!=0) swipeLeftToRight();
+            }
+            if(cards[curIndx].GetComponent<present>().presentOpen){
+                presentsOpen[curIndx]=true;
             }
         }
         bool done=true;
