@@ -27,7 +27,7 @@ public class swiping : MonoBehaviour
             if(touch.phase==TouchPhase.Began){
                 beagn=true;
                 initTouchPosition=touch.position;
-            }else if(touch.phase==TouchPhase.Ended&&beagn){
+            }else if(touch.phase==TouchPhase.Moved&&beagn){
                 if(math.abs(initTouchPosition.x-touch.position.x)/Screen.width>touchThreshhold&&curIndx<CARD_SIZE&&curIndx>=0){
                     if(initTouchPosition.x-touch.position.x>0&curIndx!=CARD_SIZE-1) swipeRightToLeft();
                     else if(initTouchPosition.x-touch.position.x<0&&curIndx!=0) swipeLeftToRight();
@@ -35,49 +35,51 @@ public class swiping : MonoBehaviour
                 if(cards[curIndx].GetComponent<present>().presentOpen){
                     presentsOpen[curIndx]=true;
                 }
-                beagn=false;
-            }
+                if(math.abs(initTouchPosition.x-touch.position.x)/Screen.width>touchThreshhold)beagn=false;
+
+            }else if(touch.phase==TouchPhase.Ended) beagn=false;
         }
         else if(Input.GetMouseButtonDown(0)){
-            beagn=true;
-            initTouchPosition=Input.mousePosition;
+            // beagn=true;
+            // initTouchPosition=Input.mousePosition;
         }else if(Input.GetMouseButtonUp(0)&&beagn){
-            Vector2 mousePos=Input.mousePosition;
-            if(math.abs(initTouchPosition.x-mousePos.x)/Screen.width>touchThreshhold&&curIndx<CARD_SIZE&&curIndx>=0){
-                if(initTouchPosition.x-mousePos.x>0&curIndx!=CARD_SIZE-1) swipeRightToLeft();
-                else if(initTouchPosition.x-mousePos.x<0&&curIndx!=0) swipeLeftToRight();
-            }
-            if(cards[curIndx].GetComponent<present>().presentOpen){
-                presentsOpen[curIndx]=true;
-            }
-            beagn=false;
+            // Vector2 mousePos=Input.mousePosition;
+            // if(math.abs(initTouchPosition.x-mousePos.x)/Screen.width>touchThreshhold&&curIndx<CARD_SIZE&&curIndx>=0){
+            //     if(initTouchPosition.x-mousePos.x>0&curIndx!=CARD_SIZE-1) swipeRightToLeft();
+            //     else if(initTouchPosition.x-mousePos.x<0&&curIndx!=0) swipeLeftToRight();
+            // }
+            // if(cards[curIndx].GetComponent<present>().presentOpen){
+            //     presentsOpen[curIndx]=true;
+            // }
+            // beagn=false;
         }
         bool done=true;
         for(int i=0;i<presentsOpen.Count&&done;i++){done=done&&presentsOpen[i];}
         if(done&&!confetti.activeSelf) confetti.SetActive(true);
     }
 
+    float transitionTime=0.35f;
     private void swipeLeftToRight(){
-        cards[curIndx].transform.DOMove(rightPosShow.position,1f);
-        cards[curIndx].transform.DOScale(0.5f,1f).SetEase(Ease.Linear);
+        cards[curIndx].transform.DOMove(rightPosShow.position,transitionTime);
+        cards[curIndx].transform.DOScale(0.5f,transitionTime).SetEase(Ease.Linear);
         if(curIndx-1>=0) {
-            cards[curIndx-1].transform.DOMove(new Vector3(0,0,0),1f);
-            cards[curIndx-1].transform.DOScale(1,1f).SetEase(Ease.Linear);
+            cards[curIndx-1].transform.DOMove(new Vector3(0,0,0),transitionTime);
+            cards[curIndx-1].transform.DOScale(1,transitionTime).SetEase(Ease.Linear);
         }
-        if(curIndx-2>=0)cards[curIndx-2].transform.DOMove(leftPosShow.position,1f);
-        if(curIndx+1<CARD_SIZE)cards[curIndx+1].transform.DOMove(rightPosOut.position,1f);
+        if(curIndx-2>=0)cards[curIndx-2].transform.DOMove(leftPosShow.position,transitionTime);
+        if(curIndx+1<CARD_SIZE)cards[curIndx+1].transform.DOMove(rightPosOut.position,transitionTime);
         curIndx--;
     }
 
     private void swipeRightToLeft(){
-        cards[curIndx].transform.DOMove(leftPosShow.position,1f);
-        cards[curIndx].transform.DOScale(0.5f,1f).SetEase(Ease.Linear);
+        cards[curIndx].transform.DOMove(leftPosShow.position,transitionTime);
+        cards[curIndx].transform.DOScale(0.5f,transitionTime).SetEase(Ease.Linear);
         if(curIndx+1<CARD_SIZE) {
-            cards[curIndx+1].transform.DOMove(new Vector3(0,0,0),1f);
-            cards[curIndx+1].transform.DOScale(1,1f).SetEase(Ease.Linear);
+            cards[curIndx+1].transform.DOMove(new Vector3(0,0,0),transitionTime);
+            cards[curIndx+1].transform.DOScale(1,transitionTime).SetEase(Ease.Linear);
         }
-        if(curIndx+2<CARD_SIZE) cards[curIndx+2].transform.DOMove(rightPosShow.position,1f);
-        if(curIndx-1>=0) cards[curIndx-1].transform.DOMove(leftPosOut.position,1f);
+        if(curIndx+2<CARD_SIZE) cards[curIndx+2].transform.DOMove(rightPosShow.position,transitionTime);
+        if(curIndx-1>=0) cards[curIndx-1].transform.DOMove(leftPosOut.position,transitionTime);
         curIndx++;
     }
 }

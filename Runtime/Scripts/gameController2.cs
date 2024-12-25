@@ -37,7 +37,7 @@ public class gameController2 : MonoBehaviour
             }
         }
         else if(Input.GetMouseButtonDown(0)){
-            handleObjectFinding(Input.mousePosition);
+            //handleObjectFinding(Input.mousePosition);
         }}else cooldownTime+=Time.deltaTime;
     }
 
@@ -84,7 +84,7 @@ public class gameController2 : MonoBehaviour
         firtRound.SetActive(false);
         secondRound.SetActive(false);
         toFind.SetActive(false);
-        done=true;
+        
     }
 
     void generateNew(){

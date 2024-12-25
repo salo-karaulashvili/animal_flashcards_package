@@ -10,8 +10,10 @@ public class present : MonoBehaviour
     public bool presentOpen;
     private Animator animator;
     private GameObject frame;
+    bool began;
     void Start(){
         presentOpen=false;
+        began=false;
         animator=GetComponentInChildren<Animator>();
         frame=transform.GetChild(2).gameObject;
         frame.transform.GetComponentInChildren<TextMeshPro>().text=animalName;
@@ -21,6 +23,13 @@ public class present : MonoBehaviour
         if (Input.touchCount > 0){
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began){
+                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(touch.position), Vector2.zero);
+                if(hit){
+                    GameObject temp=hit.collider.gameObject;
+                    if (temp.transform == transform) began=true;
+                }
+            }
+            else if(touch.phase==TouchPhase.Ended&&began){
                 RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(touch.position), Vector2.zero);
                 if(hit){
                     GameObject temp=hit.collider.gameObject;
@@ -42,12 +51,12 @@ public class present : MonoBehaviour
     }
 
     void OnMouseDown(){
-        if(transform.localScale.x==1){
-            animator.SetTrigger("talking");
-            if(!presentOpen){
-                transform.GetChild(1).gameObject.SetActive(false);
-                presentOpen=true;
-            }
-        }
+        // if(transform.localScale.x==1){
+        //     animator.SetTrigger("talking");
+        //     if(!presentOpen){
+        //         transform.GetChild(1).gameObject.SetActive(false);
+        //         presentOpen=true;
+        //     }
+        // }
     }
 }

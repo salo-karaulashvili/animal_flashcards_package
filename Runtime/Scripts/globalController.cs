@@ -11,11 +11,13 @@ public class globalController : MonoBehaviour
     [SerializeField] Button exitButton;
     private bool doneOnce;
     private AnimalFlashcardsEntryPoint _entryPoint;
+    private gameController2 gc2;
     void Start(){
         Camera.main.backgroundColor=new Color32(166,195,245,255);
         firstPart.SetActive(true);
         SecondPart.SetActive(false);
         exitButton.onClick.AddListener(finish);
+        gc2=SecondPart.GetComponentInChildren<gameController2>();
     }
 
     private void finish()=> _entryPoint.InvokeGameFinished();
@@ -27,7 +29,7 @@ public class globalController : MonoBehaviour
             Invoke("loadSecondPart",nextStageLoadTime);
             doneOnce=true;
         }
-        if(doneOnce&&SecondPart.GetComponent<gameController2>().done){
+        if(doneOnce&&gc2.done){
             _entryPoint.InvokeGameFinished();
         }
     }
