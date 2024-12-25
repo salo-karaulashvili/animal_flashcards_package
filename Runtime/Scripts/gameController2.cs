@@ -32,8 +32,7 @@ public class gameController2 : MonoBehaviour
                 handleObjectFinding(touch.position);
             }
         }
-
-        if(Input.GetMouseButtonDown(0)){
+        else if(Input.GetMouseButtonDown(0)){
             handleObjectFinding(Input.mousePosition);
         }
     }

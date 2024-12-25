@@ -5,6 +5,7 @@ using UnityEngine;
 public class globalController : MonoBehaviour
 {
     [SerializeField] GameObject firstPart,SecondPart,confetti;
+    [SerializeField] float nextStageLoadTime=3f;
     private bool doneOnce;
     void Start(){
         Camera.main.backgroundColor=new Color32(166,195,245,255);
@@ -14,7 +15,7 @@ public class globalController : MonoBehaviour
 
     void Update(){
         if(confetti.activeSelf&&!doneOnce) {
-            Invoke("loadSecondPart",10f);
+            Invoke("loadSecondPart",nextStageLoadTime);
             doneOnce=true;
         }
     }
