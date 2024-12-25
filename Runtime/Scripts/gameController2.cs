@@ -17,16 +17,20 @@ public class gameController2 : MonoBehaviour
     private List<string> secondRoundAnimals=new List<string>(){"frog","bear","lion","pig","goat","dog","cat"};
     string lookingFor;
     private SpriteResolver sr;
-    private AnimalFlashcardsEntryPoint _entryPoint;
+    private static float COOLDOWN_TIME=2f;
+    private float cooldownTime;
+    public bool done;
     void Start(){
         sr=toFind.GetComponentInChildren<SpriteResolver>();
         firstRoundThings();
         generateNew();
+        cooldownTime=COOLDOWN_TIME;
+        done=false;
     }
 
-    public void SetEntryPoint(AnimalFlashcardsEntryPoint entryPoint)=>_entryPoint=entryPoint;
     void Update(){
-        if (Input.touchCount > 0){
+        if(cooldownTime>=COOLDOWN_TIME){
+            if (Input.touchCount > 0){
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began){
                 handleObjectFinding(touch.position);
@@ -34,7 +38,7 @@ public class gameController2 : MonoBehaviour
         }
         else if(Input.GetMouseButtonDown(0)){
             handleObjectFinding(Input.mousePosition);
-        }
+        }}else cooldownTime+=Time.deltaTime;
     }
 
     private void handleObjectFinding(Vector2 mousePos){
@@ -80,7 +84,7 @@ public class gameController2 : MonoBehaviour
         firtRound.SetActive(false);
         secondRound.SetActive(false);
         toFind.SetActive(false);
-        _entryPoint.InvokeGameFinished();
+        done=true;
     }
 
     void generateNew(){

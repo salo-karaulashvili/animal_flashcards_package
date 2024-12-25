@@ -9,7 +9,7 @@ public class AnimalFlashcardsEntryPoint : BaseMiniGameEntryPoint
     protected override Task LoadInternal()
     {
         var gameManager = Instantiate(gamePrefab);
-        gameManager.GetComponentInChildren<gameController2>().SetEntryPoint(this);
+        gameManager.GetComponentInChildren<globalController>().SetEntryPoint(this);
         return Task.CompletedTask;
     }
 

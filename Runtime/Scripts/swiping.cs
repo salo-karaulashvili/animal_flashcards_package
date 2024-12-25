@@ -34,23 +34,23 @@ public class swiping : MonoBehaviour
                 }
                 if(cards[curIndx].GetComponent<present>().presentOpen){
                     presentsOpen[curIndx]=true;
-                 }
+                }
+                beagn=false;
             }
         }
         else if(Input.GetMouseButtonDown(0)){
-            if(beagn){
-                Vector2 mousePos=Input.mousePosition;
-                if(math.abs(initTouchPosition.x-mousePos.x)/Screen.width>touchThreshhold&&curIndx<CARD_SIZE&&curIndx>=0){
-                    if(initTouchPosition.x-mousePos.x>0&curIndx!=CARD_SIZE-1) swipeRightToLeft();
-                    else if(initTouchPosition.x-mousePos.x<0&&curIndx!=0) swipeLeftToRight();
-                }
-                if(cards[curIndx].GetComponent<present>().presentOpen){
-                    presentsOpen[curIndx]=true;
-                }
-            }else{
-                beagn=true;
-                initTouchPosition=Input.mousePosition;
+            beagn=true;
+            initTouchPosition=Input.mousePosition;
+        }else if(Input.GetMouseButtonUp(0)&&beagn){
+            Vector2 mousePos=Input.mousePosition;
+            if(math.abs(initTouchPosition.x-mousePos.x)/Screen.width>touchThreshhold&&curIndx<CARD_SIZE&&curIndx>=0){
+                if(initTouchPosition.x-mousePos.x>0&curIndx!=CARD_SIZE-1) swipeRightToLeft();
+                else if(initTouchPosition.x-mousePos.x<0&&curIndx!=0) swipeLeftToRight();
             }
+            if(cards[curIndx].GetComponent<present>().presentOpen){
+                presentsOpen[curIndx]=true;
+            }
+            beagn=false;
         }
         bool done=true;
         for(int i=0;i<presentsOpen.Count&&done;i++){done=done&&presentsOpen[i];}

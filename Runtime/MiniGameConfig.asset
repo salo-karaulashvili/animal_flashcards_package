@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: MiniGameConfig
   m_EditorClassIdentifier: 
   MiniGameName: animal_flashcards
-  Version: 0.1.2
+  Version: 0.1.3
   Url: https://pub-529711faccb145f2abfef09289f94d52.r2.dev
   CustomRenderPipelineAsset: {fileID: 11400000, guid: c509fb969591f9b4ebd01955898373cb, type: 2}
