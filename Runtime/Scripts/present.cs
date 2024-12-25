@@ -10,7 +10,6 @@ public class present : MonoBehaviour
     public bool presentOpen;
     private Animator animator;
     private GameObject frame;
-    private TextMeshPro name;
     void Start(){
         presentOpen=false;
         animator=GetComponentInChildren<Animator>();
