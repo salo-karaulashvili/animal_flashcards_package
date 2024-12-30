@@ -19,16 +19,17 @@ public class gameController2 : MonoBehaviour
     private SpriteResolver sr;
     private static float COOLDOWN_TIME=2f;
     private float cooldownTime;
-    public bool done;
+    public bool done,found;
     void Start(){
         sr=toFind.GetComponentInChildren<SpriteResolver>();
         firstRoundThings();
         generateNew();
         cooldownTime=COOLDOWN_TIME;
         done=false;
+        found=false;
     }
 
-    void Update(){
+    void FixedUpdate(){
         if(cooldownTime>=COOLDOWN_TIME){
             if (Input.touchCount > 0){
             Touch touch = Input.GetTouch(0);
@@ -45,7 +46,8 @@ public class gameController2 : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(mousePos), Vector2.zero);
         if(hit){
             string temp=hit.collider.tag;
-            if(temp==lookingFor){
+            if(temp==lookingFor&&!found){
+                found=true;
                 Transform initalParent=hit.collider.transform.parent;
                 Vector2 animaPos=hit.collider.transform.position;
                 Transform curobj=hit.collider.transform;
@@ -57,10 +59,9 @@ public class gameController2 : MonoBehaviour
                     toFind.transform.DOMove(Vector2.zero,2f).SetEase(Ease.Linear);
                     toFind.transform.DOScale(Vector2.one,2f).OnComplete(()=>{
                         //grublis animacia
-                        toFind.transform.GetChild(2).transform.DOScale(Vector2.one,1f).OnComplete(()=>{
-                            GameObject tmp=Instantiate(conffeti,confetimask);
-                            tmp.transform.position=Vector3.zero;
-                            toFind.transform.GetChild(2).transform.DOScale(Vector2.zero,1f).SetDelay(2f);
+                        toFind.transform.GetChild(2).transform.DOScale(Vector2.one,1f).SetEase(Ease.Linear).OnComplete(()=>{
+                            conffeti.SetActive(true);
+                            toFind.transform.GetChild(2).transform.DOScale(Vector2.zero,1f).SetEase(Ease.Linear).SetDelay(2f);
                             toFind.transform.DOScale(Vector2.one/2,2f).SetDelay(2f);
                             toFind.transform.DOLocalMove(new Vector3(0,4,0),2f).SetEase(Ease.Linear).SetDelay(2f).OnComplete(()=>{
                                 curobj.DOMove(animaPos,0f).SetEase(Ease.Linear).OnComplete(()=>{
@@ -69,7 +70,8 @@ public class gameController2 : MonoBehaviour
                                     if(firstRoundAnimals.Count==0) secondRoundThings();
                                     if (secondRoundAnimals.Count==0) ending();
                                     generateNew();
-                                    Destroy(tmp);
+                                    conffeti.SetActive(false);
+                                    found=false;
                                 });
                             });
                         });
@@ -84,7 +86,7 @@ public class gameController2 : MonoBehaviour
         firtRound.SetActive(false);
         secondRound.SetActive(false);
         toFind.SetActive(false);
-        
+        done=true;
     }
 
     void generateNew(){

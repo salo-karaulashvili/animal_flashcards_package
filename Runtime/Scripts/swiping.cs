@@ -9,17 +9,20 @@ public class swiping : MonoBehaviour
 {
     [SerializeField] GameObject[] cards;
     [SerializeField] Transform leftPosOut,rightPosOut,leftPosShow,rightPosShow;
-    [SerializeField] float touchThreshhold=0.2f;
+    private float touchThreshhold=0.05f;
     [SerializeField] GameObject confetti;
     private List<bool> presentsOpen;
     private static int CARD_SIZE;
     int curIndx=5;
     private bool beagn;
     private Vector2 initTouchPosition;
+    private List<present> presents;
     void Start(){
         CARD_SIZE=cards.Length;
         presentsOpen=new List<bool>(CARD_SIZE);
         for(int i=0;i<CARD_SIZE;i++){presentsOpen.Add(false);}
+        presents=new List<present>();
+        for(int i=0;i<cards.Length;i++) presents.Add(cards[i].GetComponent<present>());
     }
     void Update(){
         if(Input.touchCount>0){
@@ -32,12 +35,9 @@ public class swiping : MonoBehaviour
                     if(initTouchPosition.x-touch.position.x>0&curIndx!=CARD_SIZE-1) swipeRightToLeft();
                     else if(initTouchPosition.x-touch.position.x<0&&curIndx!=0) swipeLeftToRight();
                 }
-                if(cards[curIndx].GetComponent<present>().presentOpen){
-                    presentsOpen[curIndx]=true;
-                }
                 if(math.abs(initTouchPosition.x-touch.position.x)/Screen.width>touchThreshhold)beagn=false;
 
-            }else if(touch.phase==TouchPhase.Ended) beagn=false;
+            }
         }
         else if(Input.GetMouseButtonDown(0)){
             // beagn=true;
@@ -54,7 +54,7 @@ public class swiping : MonoBehaviour
             // beagn=false;
         }
         bool done=true;
-        for(int i=0;i<presentsOpen.Count&&done;i++){done=done&&presentsOpen[i];}
+        for(int i=0;i<presents.Count&&done;i++){done=done&&presents[i].presentOpen;}
         if(done&&!confetti.activeSelf) confetti.SetActive(true);
     }
 
